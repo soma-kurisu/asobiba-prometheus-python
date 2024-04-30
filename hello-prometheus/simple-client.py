@@ -5,6 +5,7 @@ from prometheus_client import start_http_server
 from prometheus_client import Counter
 from prometheus_client import Gauge
 from prometheus_client import Summary
+from prometheus_client import Histogram
 
 REQUESTS = Counter('hello_worlds_total', 'Hello Worlds requested.')
 SALES = Counter('hello_world_sales_euro_total', 'Euros made serving Hello World.')
@@ -15,12 +16,18 @@ LAST = Gauge('hello_world_last_time_seconds', 'The last time a Hello World was s
 TIME = Gauge('time_seconds', 'The current time.')
 TIME.set_function(lambda: time.time())
 
-LATENCY = Summary('hello_world_latency_seconds', 'Time for a request Hello World.')
+LATENCY_SUMMARY = Summary('hello_world_latency_summary_seconds', 'Time for a request Hello World.')
+
+LATENCY_HISTOGRAM = Histogram(
+    'hello_world_latency_histogram_seconds', 
+    'Time for a request Hello World.', 
+    buckets=[0.1 * 2**x for x in range(1, 10)] # Exponential
 
 class MyHandler(http.server.BaseHTTPRequestHandler):
     @EXCEPTIONS.count_exceptions()
     @INPROGRESS.track_inprogress()
-    @LATENCY.time()
+    @LATENCY_SUMMARY.time()
+    @LATENCY_HISTOGRAM.time()
     def do_GET(self):
         REQUESTS.inc()
         # INPROGRESS.inc()
