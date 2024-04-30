@@ -21,7 +21,7 @@ LATENCY_SUMMARY = Summary('hello_world_latency_summary_seconds', 'Time for a req
 LATENCY_HISTOGRAM = Histogram(
     'hello_world_latency_histogram_seconds', 
     'Time for a request Hello World.', 
-    buckets=[0.1 * 2**x for x in range(1, 10)] # Exponential
+    buckets=[0.1 * 2**x for x in range(1, 10)]) # Exponential
 
 class MyHandler(http.server.BaseHTTPRequestHandler):
     @EXCEPTIONS.count_exceptions()
