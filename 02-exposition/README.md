@@ -5,3 +5,4 @@ selfhosted expositioning of metrics to prometheus
     - Twisted event-driven network engine
     - Gunicorn
     - Pushgateway
+    - Bridges
