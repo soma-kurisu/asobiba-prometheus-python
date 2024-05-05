@@ -6,3 +6,4 @@ selfhosted expositioning of metrics to prometheus
     - Gunicorn
     - Pushgateway
     - Bridges
+    - Parsers
