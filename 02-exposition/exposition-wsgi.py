@@ -1,3 +1,5 @@
+# exposing Web Server Gateway Interface (WSGI)
+
 from prometheus_client import make_wsgi_app
 from wsgiref.simple_server import make_server
 
