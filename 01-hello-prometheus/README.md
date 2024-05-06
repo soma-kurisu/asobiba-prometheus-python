@@ -1,4 +1,5 @@
-instrumentation and expositioning of metrics to prometheus 
+# instrumentation and expositioning of metrics to prometheus 
+
 - focus on
-    - start_http_server
+    - `start_http_server`
     - unit testing instrumentation
