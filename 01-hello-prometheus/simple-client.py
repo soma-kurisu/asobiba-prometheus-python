@@ -34,15 +34,42 @@ class MyHandler(http.server.BaseHTTPRequestHandler):
         # start = time.time()
 
         # with EXCEPTIONS.count_exceptions():
-        if random.random() < 0.2:
+        if random.random() < 0.1:
             raise Exception
+        elif random.random() < 0.1:
+            self.send_response(301)
+            self.wfile.write(b"Ups moved!")
+        elif random.random() < 0.1:
+            self.send_response(400)
+            self.wfile.write(b"Ups bad request!")
+        elif random.random() < 0.1:
+            self.send_response(401)
+            self.wfile.write(b"Ups unauthorized!")
+        elif random.random() < 0.1:
+            self.send_response(403)
+            self.wfile.write(b"Ups forbidden!")
+        elif random.random() < 0.1:
+            self.send_response(404)
+            self.wfile.write(b"Ups not found!")
+        elif random.random() < 0.1:
+            self.send_response(500)
+            self.wfile.write(b"Panic!")
         
         euros = random.getrandbits(6) + random.random()
         SALES.inc(euros)
 
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b"Hello World")
+        if random.random() < 0.3:
+            self.send_response(202)
+            self.end_headers()
+            self.wfile.write(b"Hello World Accepted")
+        elif random.random() < 0.3:
+            self.send_response(201)
+            self.end_headers()
+            self.wfile.write(b"Hello World Created")
+        else:
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b"Hello World OK")
 
         # LAST.set(time.time())
         # LATENCY.observe(time.time() - start)
