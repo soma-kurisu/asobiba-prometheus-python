@@ -1,6 +1,13 @@
 # About
 This repository is a *prometheus* instrumentation playground for *python*. It is inteded to be used in conjunction with [asobiba-prometheus-config](https://github.com/soma-kurisu/asobiba-prometheus-config), a playground for all things configuration in the prometheus ecosystem.
 
+## Sampling
+To get some metrics, you need to run the sample application you are playing with and hit it's endpoint. For instance for [Scenario 1: hello prometheus](#Scenario-1:-hello-prometheus) following command will do the trick:
+
+```Shell
+for i in {1..1000}; do curl http://localhost:8001; sleep $((RANDOM % 10)); done
+```
+
 ## Scenario 1: hello prometheus
 Contains basic examples of how to use the prometheus client library to instrument a python application with metrics. 
 
