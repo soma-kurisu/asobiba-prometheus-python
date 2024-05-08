@@ -11,7 +11,7 @@ for i in {0..999}; do curl http://localhost:8001; sleep $((RANDOM % 5)); done
 ## Scenario 1: hello prometheus
 Contains basic examples of how to use the prometheus client library to instrument a python application with metrics. 
 
-In [offset and @ modifiers](#offset-and-modifiers) I look at how to use the `@` modifier to offset the time of a metric. Start() and end() are used in conjunction with range vectors for this purpose. For another basic *PromQL* example targeting these types of modifiers see [asobiba-prometheus-config/queries](https://github.com/soma-kurisu/asobiba-prometheus-config/blob/main/queries/02-offset-and-at-modifiers.md)
+In [offset and @ modifiers](#offset-and--modifiers) I look at how to use the `@` modifier to offset the time of a metric. Start() and end() are used in conjunction with range vectors for this purpose. For another basic *PromQL* example targeting these types of modifiers see [asobiba-prometheus-config/queries](https://github.com/soma-kurisu/asobiba-prometheus-config/blob/main/queries/02-offset-and-at-modifiers.md)
 
 ### offset and @ modifiers
 
