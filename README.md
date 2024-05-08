@@ -2,16 +2,16 @@
 This repository is a *prometheus* instrumentation playground for *python*. It is inteded to be used in conjunction with [asobiba-prometheus-config](https://github.com/soma-kurisu/asobiba-prometheus-config), a playground for all things configuration in the prometheus ecosystem.
 
 ## Sampling
-To get some metrics, you need to run the sample application you are playing with and hit it's endpoint. For instance for [Scenario 1: hello prometheus](#Scenario-1:-hello-prometheus) following command will do the trick:
+To get some metrics, you need to run the sample application you are playing with and hit it's endpoint. For instance for [Scenario 1: hello prometheus](#scenario-1-hello-prometheus) following command will do the trick:
 
 ```Shell
-for i in {1..1000}; do curl http://localhost:8001; sleep $((RANDOM % 10)); done
+for i in {0..999}; do curl http://localhost:8001; sleep $((RANDOM % 5)); done
 ```
 
 ## Scenario 1: hello prometheus
 Contains basic examples of how to use the prometheus client library to instrument a python application with metrics. 
 
-In [offset and @ modifiers](#offset-and-@-modifiers) I look at how to use the `@` modifier to offset the time of a metric. Start() and end() are used in conjunction with range vectors for this purpose. For another basic *PromQL* example targeting these types of modifiers see [asobiba-prometheus-config/queries](https://github.com/soma-kurisu/asobiba-prometheus-config/queries/02-offset-and-at-modifiers.md)
+In [offset and @ modifiers](#offset-and-modifiers) I look at how to use the `@` modifier to offset the time of a metric. Start() and end() are used in conjunction with range vectors for this purpose. For another basic *PromQL* example targeting these types of modifiers see [asobiba-prometheus-config/queries](https://github.com/soma-kurisu/asobiba-prometheus-config/blob/main/queries/02-offset-and-at-modifiers.md)
 
 ### offset and @ modifiers
 
@@ -25,7 +25,12 @@ For a range query, they resolve to the start and end of the range query respecti
 
 Following query plots the `1m` `rate` of `hello_world`-metrics of those series whose `last` `1h` `rate` was among the `top 5`.
 
-Compare result vectors and graphs of (1) `start()`-anchored (2)`end()`-anchored and (3) non-anchored range queries.
+Compare result vectors and graphs of (1) `start()`-anchored (2)`end()`-anchored and (3) non-anchored range queries. 
+
+A `topk()` query only makes sense as an *instant query* where you get exactly *k* results, but when run as a *range query*, you can get much more than *k* results since every step is evaluated independently. The `@` *modifier* fixes the *ranking* for all the steps in a range query.
+
+The `topk(5, rate({...}[1h] @ end()))` acts as a ranking function, filtering only the higher values at the *end* of the evaluation interval.
+
 ```C
 // (1) start()-anchored
 rate({
