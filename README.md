@@ -27,12 +27,39 @@ Following query plots the `1m` `rate` of `hello_world`-metrics of those series w
 
 Compare result vectors and graphs of (1) `start()`-anchored (2)`end()`-anchored and (3) non-anchored range queries. 
 
+```C
+# (1) start()-anchored
+rate(hello_worlds_total[1m])
+  and
+topk(5, 
+  rate(hello_worlds_total[1h] @ start())
+)
+```
+
+```C
+# (2) end()-anchored
+rate(hello_worlds_total[1m])
+  and
+topk(5, 
+  rate(hello_worlds_total[1h] @ end())
+)
+```
+
+```C
+# (3) non-anchored
+rate(hello_worlds_total[1m])
+  and
+topk(5, 
+  rate(hello_worlds_total[1h])
+)
+```
+
 A `topk()` query only makes sense as an *instant query* where you get exactly *k* results, but when run as a *range query*, you can get much more than *k* results since every step is evaluated independently. The `@` *modifier* fixes the *ranking* for all the steps in a range query.
 
 The `topk(5, rate({...}[1h] @ end()))` acts as a ranking function, filtering only the higher values at the *end* of the evaluation interval.
 
 ```C
-// (1) start()-anchored
+# (1) start()-anchored
 rate({
   __name__=~"(hello_world.*(s_total|bucket)|prometheus_http_requests_total)", 
   __name__!~".*exception.*", 
@@ -49,7 +76,7 @@ topk(5,
 ```
 
 ```C
-// (2) end()-anchored
+# (2) end()-anchored
 rate({
   __name__=~"(hello_world.*(s_total|bucket)|prometheus_http_requests_total)", 
   __name__!~".*exception.*", 
@@ -66,7 +93,7 @@ topk(5,
 ```
 
 ```C
-// (3) non-anchored
+# (3) non-anchored
 rate({
   __name__=~"(hello_world.*(s_total|bucket)|prometheus_http_requests_total)", 
   __name__!~".*exception.*", 
